@@ -56,7 +56,8 @@ class GooglePlacesAPI:
             "X-Goog-FieldMask": self.field_mask
             # "X-Goog-FieldMask": "places.displayName"
         }
-        # Parameter für API Call; u.a. Standort, Radius und welche Attraktionen
+        # Parameter für API Call; u.a. Standort, Radius und welche Attraktionen,
+        # wird nach Popularität ausgegeben NICHT nach Distanz
         data = {
             "includedTypes": self.no_outdoor,
             "excludedTypes": self.yes_outdoor,
@@ -70,7 +71,7 @@ class GooglePlacesAPI:
                     "radius": self.radius
                 }
             },
-            "rankPreference": "DISTANCE"
+            "rankPreference": "Popularity"
         }
 
         # API Call
