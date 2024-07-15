@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+from pprint import pprint
 
 
 class GooglePlacesAPI:
@@ -14,26 +15,15 @@ class GooglePlacesAPI:
         # Field Mask sagt aus, welche Informationen von der API benötigt werden
         self.field_mask = ("places.displayName,"
                            "places.formattedAddress,"
-                           "places.adrFormatAddress,"
                            "places.accessibilityOptions,"
                            "places.businessStatus,"
                            "places.primaryTypeDisplayName,"
                            "places.attributions,"
                            "places.googleMapsUri,"
-                           "places.addressComponents,"
-                           "places.iconBackgroundColor,"
-                           "places.iconMaskBaseUri,"
                            "places.id,"
                            "places.location,"
-                           "places.name,"
                            "places.photos,"
-                           "places.plusCode,"
-                           "places.primaryType,"
-                           "places.shortFormattedAddress,"
-                           "places.adrFormatAddress,"
-                           "places.types,"
-                           "places.utcOffsetMinutes,"
-                           "places.viewport")
+                           "places.primaryType")
 
         # Parameter ob Sachen Outdoor sind oder nicht -> Werden mit Wetter abgeglichen
         self.yes_outdoor = ["amusement_center", "amusement_park", "hiking_area", "historical_landmark", "marina",
@@ -41,13 +31,18 @@ class GooglePlacesAPI:
         self.no_outdoor = ["art_gallery", "museum", "performing_arts_theater", "aquarium", "banquet_hall",
                            "bowling_alley", "cultural_center", "movie_theater"]
 
-    def get_places(self):
-        # included_types = ["restaurant", "hiking_area"]
-        # excluded_types = ["art_gallery"]
+    def get_places(self, latitude, longitude, outdoor, radius, max_result_count, date):
+
+        if outdoor:
+            included_types = self.yes_outdoor
+            excluded_types = self.no_outdoor
+        else:
+            included_types = self.no_outdoor
+            excluded_types = self.yes_outdoor
 
         # Holt GooglePlacesAPIKey als Env Variable
         google_places_api_key = os.environ.get('GooglePlacesAPIKey')
-        print(f"Google Places API Key: {google_places_api_key}")
+        # print(f"Google Places API Key: {google_places_api_key}")
 
         # API Header für Authentication und FieldMask
         headers = {
@@ -59,16 +54,16 @@ class GooglePlacesAPI:
         # Parameter für API Call; u.a. Standort, Radius und welche Attraktionen,
         # wird nach Popularität ausgegeben NICHT nach Distanz
         data = {
-            "includedTypes": self.no_outdoor,
-            "excludedTypes": self.yes_outdoor,
-            "maxResultCount": self.maxResultCount,
+            "includedTypes": included_types,
+            "excludedTypes": excluded_types,
+            "maxResultCount": max_result_count,
             "locationRestriction": {
                 "circle": {
                     "center": {
-                        "latitude": self.latitude,
-                        "longitude": self.longitude
+                        "latitude": latitude,
+                        "longitude": longitude
                     },
-                    "radius": self.radius
+                    "radius": radius
                 }
             },
             "rankPreference": "Popularity"
@@ -78,20 +73,27 @@ class GooglePlacesAPI:
         response = requests.post(url=self.places_api_endpoint, headers=headers, json=data)
         # Gibt API Response Code aus; für debugging
         print(response.status_code)
-        print(response.text)
         # Wenn erfolgreich -> Output wird in JSON File geschrieben und formatiert
         if response.status_code == 200:
-            with open("testoutput.json", "w") as file:
-                response_json = response.json()
-                json.dump(response_json, file, indent=2)
-                print("exported response")
+            # with open("testoutput.json", "w") as file:
+            #     response_json = response.json()
+            #     json.dump(response_json, file, indent=2)
+            #     print("exported response")
+            pprint(response.status_code)
+            jsonresponse = response.json()
+
+            for i in jsonresponse:
+                output = {date: jsonresponse[i]}
+
+            return output
+
         else:
             return response.status_code
 
 
 # Funktion wird zum Testen gecallt
-places = GooglePlacesAPI()
-places.get_places()
+# places = GooglePlacesAPI()
+# places.get_places()
 
 # PARAMETER VON LINUS
 
