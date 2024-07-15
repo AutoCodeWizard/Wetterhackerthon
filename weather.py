@@ -166,4 +166,4 @@ def get_weather(latitude, longitude, start_date, end_date):
 # start_date = "2024-07-16"
 # end_date = "2024-07-16"
 # weather_data = get_weather(latitude=latitude, longitude=longitude, start_date=start_date, end_date=end_date)
-# pprint(weather_data)
+# pprint(weather_data)t
