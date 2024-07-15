@@ -8,29 +8,40 @@ is_running = True
 places = GooglePlacesAPI()
 
 while is_running:
+
+    # INPUT Funktion für Städtename
     city_name = str(input("Wohin soll es gehen?: "))
+
+    # GEOLOCATION wird mithilfe von Städtename geholt
     city_geocoding = get_geocoding(city_name=city_name)
+
+    # Koordinaten werden ausgelesen und Start- und Enddatum durch Input geholt
     latitude = city_geocoding[0]["latitude"]
     longitude = city_geocoding[0]["longitude"]
     start_date = str(input("Wann soll die Reise starten? Format YYYY-MM-DD: "))
     end_date = str(input("Wann soll die Reise enden? Format YYYY-MM-DD: "))
+
+    # Wetter Daten werden geholt mit Koordinaten sowie Datum
     weather_data = get_weather(latitude=latitude,
                                longitude=longitude,
                                start_date=start_date,
                                end_date=end_date)
 
+    # Leere Liste für Aktivitäten wird erstellt
     activities = []
-    activity_names = []
-    skipped = 0
 
+    # Loop durch Tage in Wetterdaten
     for date, day_data in weather_data.items():
 
+        # Wenn schönes Wetter ist, ist outdoor = True (beeinflusst Art von Aktivitäten, die ausgegeben werden)
         if day_data["weather_code"] <= 3:
             outdoor = True
 
+        # Wenn schlechtes Wetter ist, ist outdoor = False
         else:
             outdoor = False
 
+        # Aktivitäten für die jeweiligen Tage werden eingeholt und in die Liste 'activities' gepackt
         daily_activities = places.get_places(latitude=latitude,
                                              longitude=longitude,
                                              outdoor=outdoor,
@@ -40,84 +51,9 @@ while is_running:
 
         activities.append(daily_activities)
 
+    # Aktivitäten kommen in eine JSON Datei
     with open("test.json", "w") as file:
         json.dump(activities, file, indent=2)
 
+    # Ende des Programms
     is_running = False
-
-############ TRASH CODE ################
-
-
-# for activity in daily_activities[date]:
-#     print(activity["displayName"]["text"])
-#     if activity["displayName"]["text"] in activity_names:
-#         skipped += 1
-#
-#     activities.append(daily_activities)
-#     activity_names += activity["displayName"]["text"]
-
-
-# with open("weatherdata.json", "w") as file:
-#     json.dump(weather_data, file, indent=2)
-#     print("exported weatherdata into file")
-
-# for date, day_data in weather_data.items():
-#     if day_data["weather_code"] <= 3:
-#         outdoor = True
-#     else:
-#         outdoor = False
-
-# for date, day_data in weather_data.items():
-#     if day_data["weather_code"] <= 3:
-#         outdoor = True
-#         daily_activities = places.get_places(latitude=latitude,
-#                           longitude=longitude,
-#                           outdoor=outdoor,
-#                           radius=10000,
-#                           max_result_count=10)
-#
-#         with open(f"activities_{date}.json", "w") as file:
-#             json.dump(daily_activities, file, indent=2)
-#             print(f"exported daily activities for {date}")
-#
-#     else:
-#         outdoor = False
-#         daily_activities = places.get_places(latitude=latitude,
-#                           longitude=longitude,
-#                           outdoor=outdoor,
-#                           radius=10000,
-#                           max_result_count=10)
-#
-#         with open(f"activities_{date}.json", "w") as file:
-#             json.dump(daily_activities, file, indent=2)
-#             print(f"exported daily activities for {date}")
-
-
-#     for i in range(len(daily_activities["places"])):
-#
-#         name = daily_activities["places"][i]["displayName"]["text"]
-#         formatted_address = daily_activities["places"][i]["formattedAddress"]
-#         primary_type = daily_activities["places"][i]["primaryType"]
-#         photos = daily_activities["places"][i]["photos"]
-#         accessibility_options = daily_activities["places"][i]["accessibilityOptions"]
-#
-#         activity = {
-#             name: {
-#                 "formattedAddress": formatted_address,
-#                 "primaryType": primary_type,
-#                 "photos": photos,
-#                 "accessibilityOptions": accessibility_options
-#             }
-#         }
-#
-#         for activity in activities:
-#             if activity[name] in activities:
-#                 skipped += 1
-#
-#         else:
-#             activities.append(activity)
-#
-# with open("all_activities.json", "w") as file:
-#     json.dump(activities, file, indent=2)
-#     print("DONE!")
-#     print(f"SKIPPED ACTIVITIES: {skipped}")
