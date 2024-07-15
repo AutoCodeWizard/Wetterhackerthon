@@ -21,7 +21,7 @@ cd Wetterhackerthon
 python -m venv venv
 ```
 
-### Aktivieren Sie die virtuelle Umgebung:
+### Aktivieren der virtuellen Umgebung:
 ```bash
 source venv/bin/activate  # Für Linux und macOS
 ```
@@ -29,6 +29,10 @@ source venv/bin/activate  # Für Linux und macOS
 venv\\Scripts\\Activate  # Für Windows
 ```
 
+### Installieren der Abhängigkeiten in der neuen Python venv:
+```bash
+pip install -r requirements.txt
+```
 
 ## Verwendung
 
