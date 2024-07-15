@@ -1,34 +1,10 @@
 [theme]
-primaryColor = "#1e88e5"
-backgroundColor = "#ffffff"
-textColor = "#000000"
-secondaryBackgroundColor = "#ff7043"
-
+primaryColor = "#f7f9f8"
+backgroundColor = "#04303b"
+textColor = "#c2fe05"
+secondaryBackgroundColor = "#028d83"
 font = "monospace"
-
 [server]
 runOnSave = true
-
 [runner]
 magicEnabled = true
-
-[layout]
-wideMode = true
-
-#Design 1:
-#Hauptfarbe (primaryColor): #1e88e5 (Blau)
-#Hintergrundfarbe (backgroundColor): #ffffff (Weiß)
-#Textfarbe (textColor): #000000 (Schwarz)
-#Sekundäre Hintergrundfarbe (secondaryBackgroundColor): #ff7043 (Orange)
-
-#Design 2:
-#Hauptfarbe (primaryColor): #4caf50 (Grün)
-#Hintergrundfarbe (backgroundColor): #ffffff (Weiß)
-#Textfarbe (textColor): #000000 (Schwarz)
-#Sekundäre Hintergrundfarbe (secondaryBackgroundColor): #9c27b0 (Lila)
-
-#Design 3:
-#Hauptfarbe (primaryColor): #ff9800 (Orange)
-#Hintergrundfarbe (backgroundColor): #ffffff (Weiß)
-#Textfarbe (textColor): #000000 (Schwarz)
-#Sekundäre Hintergrundfarbe (secondaryBackgroundColor): #03a9f4 (Hellblau)
