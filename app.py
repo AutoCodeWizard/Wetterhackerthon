@@ -105,9 +105,9 @@ def add_activity_markers(map_object, latitude, longitude):
         ).add_to(map_object)
 
 # Streamlit App
-st.set_page_config(page_title="Wettervorhersage App", layout="wide")
+st.set_page_config(page_title="Wettervorhersage", layout="wide")
 
-st.title("Wettervorhersage App")
+st.title("Wettervorhersage")
 st.sidebar.write("Geben Sie eine Stadt ein, um die Wettervorhersage und Aktivitätenvorschläge zu erhalten.")
 
 city_name = st.sidebar.text_input("Stadtname:", "")
